@@ -12,6 +12,9 @@ FROM httpd
 # Ruta donde quiero que se ejecute el servicio de apache
 # Este comando copia el contenido del directorio local www al directorio htdocs del contenedor, que es donde Apache busca los archivos para servir.
 # Asegúrate de que el directorio www exista en el mismo nivel que tu Dockerfile y contenga los archivos que deseas servir a través de Apache.
+# --- Construir una imagen desde aqui -> docker build -t miapache:1.0.0 -> Me crea una imagen
+# --- Construir una imagen desde aqui -> docker build -t miapache:1 . -> Indica que se ejecuta en el mismo directorio de la imagen
+# --- Construir uel contenedor con los archivo que tenia dentro desde aqui -> docker run -d --rm -p 80:80 miapache:1 
 COPY ./www/ /usr/local/apache2/htdocs/
 
 # Exponer el puerto 80 para que el servidor web sea accesible desde fuera del contenedor
@@ -33,3 +36,4 @@ EXPOSE 80
 # para que puedas ver tu servidor web en acción
 # Ejecuta : 
 # docker run -d --rm --name apache01 -p 8080:80 miapache:1.0.0
+
