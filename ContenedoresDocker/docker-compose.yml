@@ -1,0 +1,11 @@
+# version para versiones antiguas
+# Definiendo los contenedores
+services:
+  servidorweb: # Nombre del contenedor (servidorweb) puedo poner el que quiera
+    image: httpd # Imagen que voy a usar para crear el contenedor puede local o remota
+    container_name: apache01 # Nombre del contenedor puedo poner el que quiera ( es una etiqueta como --name en docker run)
+    restart: unless-stopped # Politica de reinicio (siempre, a menos que se pare, nunca, etc) 
+    ports:
+      - "8080:80" # Mapeo de puertos (host:contenedor)
+    volumes: 
+      - ./www:/usr/local/apache2/htdocs/ # Mapeo de volúmenes (host:contenedor)
