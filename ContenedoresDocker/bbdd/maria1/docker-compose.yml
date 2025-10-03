@@ -1,0 +1,32 @@
+# Este archivo docker-compose.yml define los servicios, redes y volúmenes necesarios para desplegar una aplicación multi-contenedor.
+
+# Cada servicio se configura con su imagen, puertos expuestos, variables de entorno y dependencias.
+
+# Las redes permiten la comunicación entre los servicios, mientras que los volúmenes aseguran la persistencia de datos.
+
+# Modifique los valores según los requisitos de su entorno y aplicación.
+
+# Vamos a crear 2 Servicios a la vez para mismo docker compose
+
+#servidor mariadb
+services:
+  servidorweb2: # Nombre del contenedor (servidorweb) puedo poner el que quiera
+    image: nginx # Imagen que voy a usar para crear el contenedor puede local o remota
+    container_name: nginx01 # Nombre del contenedor puedo poner el que quiera ( es una etiqueta como --name en docker run)
+    ports:
+      - "80:80"
+    restart: unless-stopped # Politica de reinicio (siempre, a menos que se pare, nunca, etc)
+  mariadb1:
+    image: mariadb
+    container_name: base01
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      - MARIADB_ROOT_PASSWORD = asd1
+      # name=value - Valores clave-valor
+    volumes: 
+      - datos_mariadb1:/var/lib/mysql
+volumes:
+  datos_mariadb1: 
+  

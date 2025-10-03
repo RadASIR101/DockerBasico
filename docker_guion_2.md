@@ -110,3 +110,5 @@ http://localhost:8080
 ```docker
 docker stop <nombre_contenedor>
 ```
+
+ker/apache$ docker run -dit --rm --name alpine01 alpine

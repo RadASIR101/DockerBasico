@@ -1,0 +1,11 @@
+# Servidor Nginx con Docker Compose
+services:
+  servidorweb2: # Nombre del contenedor (servidorweb) puedo poner el que quiera
+    image: nginx # Imagen que voy a usar para crear el contenedor puede local o remota
+    container_name: nginx01 # Nombre del contenedor puedo poner el que quiera ( es una etiqueta como --name en docker run)
+    ports:
+      - "80:80"
+    restart: unless-stopped # Politica de reinicio (siempre, a menos que se pare, nunca, etc)
+    volumes:
+      - ./html:/usr/local/nginx/html/ # Mapeo de volúmenes (host:contenedor)
+
