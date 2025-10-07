@@ -14,8 +14,11 @@ services:
     image: nginx # Imagen que voy a usar para crear el contenedor puede local o remota
     container_name: nginx01 # Nombre del contenedor puedo poner el que quiera ( es una etiqueta como --name en docker run)
     ports:
-      - "80:80"
+      - "8080:80"
     restart: unless-stopped # Politica de reinicio (siempre, a menos que se pare, nunca, etc)
+    volumes:
+      - ./html:/usr/share/nginx/html # Mapeo de volúmenes (host:contenedor)
+
   mariadb1:
     image: mariadb
     container_name: base01
@@ -23,10 +26,16 @@ services:
     ports:
       - "3306:3306"
     environment:
-      - MARIADB_ROOT_PASSWORD = asd1
+      # Variables de entorno para la configuración del contenedor propias del creador
+      - MARIADB_ROOT_PASSWORD=asd1
       # name=value - Valores clave-valor
-    volumes: 
-      - datos_mariadb1:/var/lib/mysql
+    volumes:
+      # persistencia - volumen de docker - cuando levanto un contenendor almacena
+      # lo mismos datos aunque haga un docker compose down
+      # Guarda los datos , crea persistencia
+      - datos_mariadb1:/var/lib/mysql # esta ruta es donde se almacena las bd
+
+# Definición de redes para permitir la comunicación entre los servicios
+# Almacenan los volumenes
 volumes:
-  datos_mariadb1: 
-  
+  datos_mariadb1:
