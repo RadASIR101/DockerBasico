@@ -103,3 +103,15 @@ todas las bd que haga se registra en esta red
 172.18.0.2 -> basededatos -> Viene en el DNSName
 
 usuario root - pass : asd1 
+
+
+docker exec -it phpMyadmin bash
+
+
+- Nombre de la maquina como nombre de dominio
+
+Cada dockerfile tiene redes diferentes y se pueden conectar entre ellas mediante configuración
+
+ping 127.18.0.2
+ping serv_mariadb
+ping basededatos
