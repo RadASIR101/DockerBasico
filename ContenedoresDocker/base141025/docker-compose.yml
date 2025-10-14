@@ -1,0 +1,43 @@
+#servicios para mariaDB y phpmyadmin
+# Esta en la misma red y esa red se monta con servidor de DNS interno y responde a los nombres de los contenedores , si hago ping a mariadb desde phpmyadmin responde
+# Si hago ping a mariadb desde el host no responde porque no esta en la red del host
+# todo se monta con un servidor DNS interno
+# Si quiero que responda en el host tengo que poner network_mode: "host" en el servicio
+# Pero si hago eso no puedo mapear puertos , porque el puerto ya esta en uso
+# Si quiero montar otra red tengo que crearla con docker network create y ponerla en el servicio con networks:
+# networks:
+#   mi_red:
+#     driver: bridge
+# y crear la red mi_red con docker network create mi_red
+# y si quiero que responda en el host tengo que poner network_mode: "host" en el servicio
+# Pero si hago eso no puedo mapear puertos , porque el puerto ya esta en uso
+
+services:
+  basededatos:
+    build: . # Construir la imagen desde el Dockerfile en el directorio actual
+    container_name: mariadb_1
+    restart: unless-stopped # Politica de reinicio (siempre, a menos que se pare, nunca, etc)
+    environment:
+      MARIADB_ROOT_PASSWORD: asd1
+    ports:
+      - "3306:3306" # Puerto de la maquina anfitrion | Puerto de la maquina remota
+    volumes:
+      - db_data1:/var/lib/mysql # asegura que los datos de la base de datos **persistan**
+      - ./mariadb-conf:/etc/mysql/conf.d # archivo de configuración extra , creo carpeta con archivo de conf
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - basededatos
+    ports:
+      - "8080:80"
+    environment:
+      PMA_ARBITRARY: "1" # Permitir conexiones arbitrarias a servidores MySQL desde phpMyAdmin 
+      # PMA_ARBITRARY_CONNECTION: "1" # Permitir conexiones arbitrarias a servidores MySQL desde phpMyAdmin
+      # PMA_USER: "root" # Usuario por defecto para phpMyAdmin ( si no se pone no sale ningun usuario en el login)  
+      # PMA_PASSWORD: "asd1" # Contraseña por defecto para phpMyAdmin ( si no se pone no sale ningun usuario en el login)
+# crear el volumen para la base de datos para que los datos persistan
+volumes:
+  db_data1: # este volumen se monta en /var/lib/mysql en el contenedor de mariadb y se usa para que los datos persistan para que no se borren al borrar el contenedor
