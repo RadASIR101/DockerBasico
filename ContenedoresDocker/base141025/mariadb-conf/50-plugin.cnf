@@ -1,3 +1,0 @@
-[mariadb]
-# Cargar el plugin de autenticación de MySQL nativo
-plugin_load_add = auth_ed25519

@@ -23,7 +23,9 @@ services:
       - "3306:3306" # Puerto de la maquina anfitrion | Puerto de la maquina remota
     volumes:
       - db_data1:/var/lib/mysql # asegura que los datos de la base de datos **persistan**
-      - ./mariadb-conf:/etc/mysql/conf.d # archivo de configuración extra , creo carpeta con archivo de conf
+      - db_logs1:/var/log/mysql # volumen para logs de mysql
+      - ./mariadb-conf:/etc/mysql/conf.d # archivo de configuración extra , creo carpeta con archivo de conf gestionado por docker
+                                            # Podra añadir - :ro → modo solo lectura para que no se pueda modificar desde el contenedor
 
   phpmyadmin:
     image: phpmyadmin
@@ -34,10 +36,11 @@ services:
     ports:
       - "8080:80"
     environment:
-      PMA_ARBITRARY: "1" # Permitir conexiones arbitrarias a servidores MySQL desde phpMyAdmin 
+      PMA_ARBITRARY: "1" # Permitir conexiones arbitrarias a servidores MySQL desde phpMyAdmin
       # PMA_ARBITRARY_CONNECTION: "1" # Permitir conexiones arbitrarias a servidores MySQL desde phpMyAdmin
-      # PMA_USER: "root" # Usuario por defecto para phpMyAdmin ( si no se pone no sale ningun usuario en el login)  
+      # PMA_USER: "root" # Usuario por defecto para phpMyAdmin ( si no se pone no sale ningun usuario en el login)
       # PMA_PASSWORD: "asd1" # Contraseña por defecto para phpMyAdmin ( si no se pone no sale ningun usuario en el login)
 # crear el volumen para la base de datos para que los datos persistan
 volumes:
   db_data1: # este volumen se monta en /var/lib/mysql en el contenedor de mariadb y se usa para que los datos persistan para que no se borren al borrar el contenedor
+  db_logs1: # este volumen se monta en /var/log/mysql en el contenedor de mariadb y se usa para que los logs persistan para que no se borren al borrar el contenedor
